@@ -3,16 +3,31 @@ import Plant from "./pages/RawImage";
 import MainLayout from "./components/layout/MainLayout";
 import UploadImage from "./pages/UploadImage";
 import ChatBotComponent from "./pages/Chatbot";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<MainLayout />}>
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Protected routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Plant />} />
             <Route path="/UploadImage" element={<UploadImage />} />
-            <Route path="/chatbot" element={<ChatBotComponent />} /> {/* Add route to the ChatBot component */}
+            <Route path="/chatbot" element={<ChatBotComponent />} />
           </Route>
         </Routes>
       </Router>
