@@ -29,7 +29,7 @@ export default function App() {
             <Route index element={<Plant />} />
             <Route path="UploadImage" element={<UploadImage />} />
             <Route path="chatbot" element={<ChatBotComponent />} />
-            <Route path="/model-metrics" element={<ModelMetricsPage />} />
+            <Route path="model-metrics" element={<ModelMetricsPage />} />
           </Route>
         </Routes>
       </Router>
