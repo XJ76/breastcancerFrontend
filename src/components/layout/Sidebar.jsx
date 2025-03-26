@@ -25,11 +25,11 @@ const Sidebar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
   const Menus = [
-    { title: "Symptom Analysis", to: "/", icon: <AiOutlineFileImage className={location.pathname === "/" ? "text-pink-600" : "text-gray-500"} /> },
-    { title: "Analyze Monogram", to: "/UploadImage", icon: <FaRegHospital className={location.pathname === "/UploadImage" ? "text-pink-600" : "text-gray-500"} /> },
-    { title: "AI Assistant", to: "/chatbot", icon: <AiOutlineRobot className={location.pathname === "/chatbot" ? "text-pink-600" : "text-gray-500"} /> },
+    { title: "Symptom Analysis", to: "/dashboard", icon: <AiOutlineFileImage className={location.pathname === "/dashboard" ? "text-pink-600" : "text-gray-500"} /> },
+    { title: "Analyze Monogram", to: "/dashboard/UploadImage", icon: <FaRegHospital className={location.pathname === "/dashboard/UploadImage" ? "text-pink-600" : "text-gray-500"} /> },
+    { title: "AI Assistant", to: "/dashboard/chatbot", icon: <AiOutlineRobot className={location.pathname === "/dashboard/chatbot" ? "text-pink-600" : "text-gray-500"} /> },
+    { title: "Model Metrics", to: "/dashboard/model-metrics", icon: <FaBrain className={location.pathname === "/dashboard/model-metrics" ? "text-pink-600" : "text-gray-500"} /> },
   ];
 
   return (

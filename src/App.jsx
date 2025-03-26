@@ -6,6 +6,7 @@ import ChatBotComponent from "./pages/Chatbot";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ModelMetricsPage from "./pages/ModelMetricsPage";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             <Route index element={<Plant />} />
             <Route path="UploadImage" element={<UploadImage />} />
             <Route path="chatbot" element={<ChatBotComponent />} />
+            <Route path="/model-metrics" element={<ModelMetricsPage />} />
           </Route>
         </Routes>
       </Router>
