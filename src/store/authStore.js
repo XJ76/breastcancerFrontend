@@ -10,7 +10,7 @@ const useAuthStore = create((set) => ({
   login: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post('https://auth-backend-qyna.onrender.com/api/login', {
         email,
         password,
       });
@@ -30,7 +30,7 @@ const useAuthStore = create((set) => ({
   register: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('https://auth-backend-qyna.onrender.com/api/register', {
         email,
         password,
       });
