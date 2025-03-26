@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileInput, Label, Modal, Spinner } from "flowbite-react";
-
-import { dataset } from "../../production/urls";
+import useBreastCancerStore from "../store/breastCancerStore";
+import ModelMetrics from "./ModelMetrics";
 
 const BreastCancerDetectionComponent = () => {
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showRecommendations, setShowRecommendations] = useState(false);
   const [symptoms, setSymptoms] = useState([""]);
@@ -12,12 +11,32 @@ const BreastCancerDetectionComponent = () => {
   const [recommendations, setRecommendations] = useState(null);
   const [error, setError] = useState(null);
 
-  const handleFileUpload = (event) => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+  const {
+    result,
+    metrics,
+    loading,
+    metricsLoading,
+    error: apiError,
+    metricsError,
+    detectBreastCancer,
+    fetchModelMetrics,
+  } = useBreastCancerStore();
+
+  useEffect(() => {
+    // Fetch model metrics when component mounts
+    fetchModelMetrics();
+  }, [fetchModelMetrics]);
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      await detectBreastCancer(file);
       setShowModal(true);
-    }, 2000); // Simulate a 2-second loading time
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const closeModal = () => {
@@ -43,11 +62,9 @@ const BreastCancerDetectionComponent = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Symptoms before sending request:", symptoms);
-    const key = symptoms.join(",");
-    if (key in dataset) {
-      setDiagnosis(dataset[key][0]);
-      setRecommendations(dataset[key][1]);
+    if (result) {
+      setDiagnosis(result.prediction);
+      setRecommendations(result.message);
     } else {
       setError("Unable to determine diagnosis from given symptoms or mammogram image");
     }
@@ -55,8 +72,8 @@ const BreastCancerDetectionComponent = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-screen min-h-screen bg-gradient-to-r from-gray-100 to-gray-300 p-6">
-      <div className="flex flex-col gap-8 p-8 bg-white rounded-2xl shadow-2xl w-full max-w-2xl">
+    <div className="flex flex-col items-center justify-center w-screen min-h-screen bg-gradient-to-r from-gray-100 to-gray-300 p-6">
+      <div className="flex flex-col gap-8 p-8 bg-white rounded-2xl shadow-2xl w-full max-w-2xl mb-8">
         <div className="flex w-full items-center justify-center text-3xl font-bold mb-6 text-gray-800">
           <h1>Upload Mammogram Image</h1>
         </div>
@@ -121,16 +138,34 @@ const BreastCancerDetectionComponent = () => {
           <h2 className="text-xl font-semibold mb-4">Analysis Results</h2>
           {loading ? (
             <p className="text-base">Analyzing mammogram...</p>
-          ) : error ? (
-            <p className="text-base text-red-500">{error}</p>
-          ) : (
+          ) : apiError ? (
+            <p className="text-base text-red-500">{apiError}</p>
+          ) : result ? (
             <>
-              <p className="text-base">Diagnosis: {diagnosis}</p>
-              <p className="text-base">Recommendations: {recommendations}</p>
+              <p className="text-base">Prediction: {result.prediction}</p>
+              <p className="text-base">Confidence: {(result.confidence * 100).toFixed(2)}%</p>
+              <p className="text-base">{result.message}</p>
             </>
+          ) : (
+            <p className="text-base">Upload an image to get started</p>
           )}
         </div>
       </div>
+
+      {/* Model Metrics Section */}
+      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-2xl p-8">
+        {metricsLoading ? (
+          <div className="flex justify-center items-center h-32">
+            <Spinner size="xl" color="pink" />
+            <p className="ml-4 text-lg text-pink-500">Loading model metrics...</p>
+          </div>
+        ) : metricsError ? (
+          <div className="text-red-500 text-center p-4">{metricsError}</div>
+        ) : (
+          <ModelMetrics metrics={metrics} />
+        )}
+      </div>
+
       {showModal || showRecommendations ? (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"></div>
       ) : null}
@@ -176,13 +211,16 @@ const BreastCancerDetectionComponent = () => {
           <h2 className="text-xl font-semibold mb-4">Detailed Analysis</h2>
           {loading ? (
             <p className="text-base">Analyzing mammogram...</p>
-          ) : error ? (
-            <p className="text-base text-red-500">{error}</p>
-          ) : (
+          ) : apiError ? (
+            <p className="text-base text-red-500">{apiError}</p>
+          ) : result ? (
             <>
-              <p className="text-base">Diagnosis: {diagnosis}</p>
-              <p className="text-base">Recommendations: {recommendations}</p>
+              <p className="text-base">Prediction: {result.prediction}</p>
+              <p className="text-base">Confidence: {(result.confidence * 100).toFixed(2)}%</p>
+              <p className="text-base">{result.message}</p>
             </>
+          ) : (
+            <p className="text-base">No results available</p>
           )}
         </Modal.Body>
         <Modal.Footer className="bg-gray-100">
