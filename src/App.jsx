@@ -26,8 +26,8 @@ export default function App() {
             }
           >
             <Route index element={<Plant />} />
-            <Route path="/app/UploadImage" element={<UploadImage />} />
-            <Route path="/app/chatbot" element={<ChatBotComponent />} />
+            <Route path="UploadImage" element={<UploadImage />} />
+            <Route path="chatbot" element={<ChatBotComponent />} />
           </Route>
         </Routes>
       </Router>
