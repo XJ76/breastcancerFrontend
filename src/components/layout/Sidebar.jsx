@@ -101,6 +101,28 @@ const Sidebar = () => {
               )}
             </li>
           ))}
+          <li className="flex items-center p-4 rounded-lg cursor-pointer hover:bg-pink-900 hover:text-pink-300 text-sm gap-x-4 mt-4 text-pink-200 group relative">
+            <Link
+              to="/"
+              className={`flex items-center gap-x-4 w-full ${
+                !open && "justify-center"
+              }`}
+            >
+              <span className="text-2xl">🔒</span>
+              <span
+                className={`${
+                  !open ? "hidden" : "origin-left duration-200 text-xl font-semibold"
+                }`}
+              >
+                Logout
+              </span>
+            </Link>
+            {!open && (
+              <span className="absolute left-14 whitespace-nowrap bg-pink-900 text-pink-300 p-2 rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                Logout
+              </span>
+            )}
+          </li>
         </ul>
       </div>
     </div>
