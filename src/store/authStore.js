@@ -1,11 +1,12 @@
-import { create } from 'zustand';
 import axios from 'axios';
+import { create } from 'zustand';
 
 const useAuthStore = create((set) => ({
   token: localStorage.getItem('token') || null,
   isAuthenticated: !!localStorage.getItem('token'),
   error: null,
   loading: false,
+  userRole: localStorage.getItem('userRole') || null,
 
   login: async (email, password) => {
     set({ loading: true, error: null });
@@ -14,9 +15,10 @@ const useAuthStore = create((set) => ({
         email,
         password,
       });
-      const { token } = response.data;
+      const { token, role } = response.data;
       localStorage.setItem('token', token);
-      set({ token, isAuthenticated: true, loading: false });
+      localStorage.setItem('userRole', role);
+      set({ token, isAuthenticated: true, userRole: role, loading: false });
       return true;
     } catch (error) {
       set({
