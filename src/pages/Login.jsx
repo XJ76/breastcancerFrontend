@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+import {
+  Link,
+  useNavigate,
+} from 'react-router-dom';
+
 import useAuthStore from '../store/authStore';
 
 const Login = () => {
@@ -7,12 +12,25 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const { login, error, loading } = useAuthStore();
   const navigate = useNavigate();
+  const [selectedRole, setSelectedRole] = useState('');
+
+  const handleRoleSelect = (role) => {
+    setSelectedRole(role);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const success = await login(email, password);
     if (success) {
-      navigate('/dashboard');
+      if (selectedRole === 'admin') {
+        navigate('/admin-dashboard');
+      } else if (selectedRole === 'doctor') {
+        navigate('/doctor-dashboard');
+      } else if (selectedRole === 'patient') {
+        navigate('/patient-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     }
   };
 
@@ -23,6 +41,11 @@ const Login = () => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
           </h2>
+        </div>
+        <div className="flex justify-center space-x-4 mt-4">
+          <button onClick={() => handleRoleSelect('admin')} className={`px-4 py-2 rounded-md ${selectedRole === 'admin' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>Admin</button>
+          <button onClick={() => handleRoleSelect('doctor')} className={`px-4 py-2 rounded-md ${selectedRole === 'doctor' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>Doctor</button>
+          <button onClick={() => handleRoleSelect('patient')} className={`px-4 py-2 rounded-md ${selectedRole === 'patient' ? 'bg-indigo-600 text-white' : 'bg-gray-200'}`}>Patient</button>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
@@ -79,7 +102,7 @@ const Login = () => {
             to="/register"
             className="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            Don't have an account? Sign up
+            Don&apos;t have an account? Sign up
           </Link>
         </div>
       </div>
