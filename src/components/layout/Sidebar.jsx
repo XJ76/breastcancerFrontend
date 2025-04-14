@@ -1,9 +1,20 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaRegHospital } from "react-icons/fa";
-import { AiOutlineFileImage } from "react-icons/ai";
-import { AiOutlineRobot } from "react-icons/ai";
-import { FaBrain } from "react-icons/fa";
+import {
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  AiOutlineFileImage,
+  AiOutlineRobot,
+} from 'react-icons/ai';
+import {
+  FaBrain,
+  FaRegHospital,
+} from 'react-icons/fa';
+import {
+  Link,
+  useLocation,
+} from 'react-router-dom';
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
