@@ -1,7 +1,17 @@
 import React, { useEffect } from 'react';
+
 import { Spinner } from 'flowbite-react';
-import useBreastCancerStore from '../store/breastCancerStore';
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+
 import ModelMetrics from '../components/ModelMetrics';
+import useBreastCancerStore from '../store/breastCancerStore';
 
 const ModelMetricsPage = () => {
   const { metrics, metricsLoading, metricsError, fetchModelMetrics } = useBreastCancerStore();
@@ -27,6 +37,16 @@ const ModelMetricsPage = () => {
       ) : (
         <div className="bg-white rounded-lg shadow-lg p-6">
           <ModelMetrics metrics={metrics} />
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Dummy Chart</h2>
+            <LineChart width={600} height={300} data={metrics}>
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+              <CartesianGrid stroke="#ccc" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+            </LineChart>
+          </div>
         </div>
       )}
     </div>
