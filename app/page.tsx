@@ -179,7 +179,7 @@ export default function Home() {
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <div className="flex items-center gap-2">
             <ShieldCheck className="h-5 w-5 text-primary" />
-            <p className="text-sm text-muted-foreground">© 2023 MammoScan. Developed by Emmah.</p>
+            <p className="text-sm text-muted-foreground">© 2025 MammoScan. Developed by Emmah.</p>
           </div>
           <nav className="flex gap-4 text-sm text-muted-foreground">
             <Link href="/about" className="hover:underline">

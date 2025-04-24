@@ -552,7 +552,7 @@ export default function MetricsPage() {
       </main>
       <footer className="border-t py-4">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">© 2023 MammoScan. Developed by Emmah.</p>
+          <p className="text-sm text-muted-foreground">© 2025 MammoScan. Developed by Emmah.</p>
           <nav className="flex gap-4 text-sm text-muted-foreground">
             <Link href="/about" className="hover:underline">
               About

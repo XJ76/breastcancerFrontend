@@ -4,13 +4,26 @@ import type React from "react"
 
 import { createContext, useContext, useEffect, useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import useAuthStore from "@/lib/stores/auth-store"
+import useAuthStore, { type UserRole } from "@/lib/stores/auth-store"
 
 type AuthContextType = {
   isAuthenticated: boolean
-  userRole: string | null
+  userData: {
+    email: string
+    firstName: string
+    lastName: string
+    role: UserRole
+    specialty?: string
+  } | null
   login: (email: string, password: string) => Promise<boolean>
-  register: (email: string, password: string) => Promise<boolean>
+  register: (userData: {
+    email: string
+    password: string
+    firstName: string
+    lastName: string
+    role: UserRole
+    specialty?: string
+  }) => Promise<boolean>
   logout: () => void
   loading: boolean
   error: string | null
@@ -23,7 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const [initialized, setInitialized] = useState(false)
 
-  const { isAuthenticated, userRole, login, register, logout, loading, error } = useAuthStore()
+  const { isAuthenticated, userData, login, register, logout, loading, error } = useAuthStore()
 
   useEffect(() => {
     // Only run on client-side
@@ -46,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     isAuthenticated,
-    userRole,
+    userData,
     login,
     register,
     logout,
